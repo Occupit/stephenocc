@@ -41,43 +41,161 @@ h2::after {
     border-radius: 2px;
 }
 
-/* --- Navigation Bar --- */
+/* ==========================================================================
+   1. SHARED CORE STYLES (Applies to both Mobile and Desktop)
+   ========================================================================== */
+
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 5%;
     background-color: #ffffff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: 9999; /* Keeps the entire header on top of body elements */
+    width: 100%;
+    box-sizing: border-box;
+    font-family: system-ui, -apple-system, sans-serif;
 }
 
+/* Formats your name text cleanly */
 .navbar .logo {
     font-weight: 700;
-    font-size: 1.3rem;
-    color: #111;
+    font-size: 1.25rem;
+    color: #111827;
+    white-space: nowrap; /* Strictly prevents name wrapping */
 }
 
+/* Hides the structural tracking checkbox completely on all devices */
+.menu-toggle {
+    display: none !important;
+    visibility: hidden;
+}
+
+/* Resets default browser list styling margins/bullets */
 .nav-links {
-    display: flex;
-    list-style: none;
-}
-
-.nav-links li {
-    margin-left: 25px;
+    list-style-type: none !important;
+    list-style: none !important;
+    margin: 0;
+    padding: 0;
 }
 
 .nav-links a {
     text-decoration: none;
-    color: #555;
     font-weight: 500;
-    transition: color 0.3s ease;
+    transition: color 0.2s ease;
 }
 
-.nav-links a:hover {
-    color: #007bff;
+
+/* ==========================================================================
+   2. DESKTOP VIEW (For screens LARGER than 768px wide)
+   ========================================================================== */
+@media (min-width: 769px) {
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 5%;
+    }
+
+    /* Hides mobile hamburger elements on desktop */
+    .hamburger-label {
+        display: none !important;
+    }
+
+    /* Arranges list elements horizontally */
+    .nav-links {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 30px;
+    }
+
+    .nav-links a {
+        color: #4b5563; /* Elegant slate gray links */
+    }
+
+    .nav-links a:hover {
+        color: #4338ca; /* Transitions to matching project theme violet on hover */
+    }
+}
+
+
+/* ==========================================================================
+   3. MOBILE RESPONSIVE VIEW (For screen widths 768px or smaller)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .navbar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 20px;
+        position: relative; /* Context anchor point for absolute dropdown sheet */
+    }
+
+    /* Renders and structures the 3-bar hamburger stacked alignment layout box */
+    .hamburger-label {
+        display: flex !important;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        z-index: 10001; /* Layered slightly higher than drawer overlay */
+    }
+
+    /* Individual custom line style layout rendering dimensions */
+    .hamburger-label span {
+        display: block;
+        width: 24px;
+        height: 3px;
+        background-color: #1f2937;
+        border-radius: 2px;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    /* Transforms the navigation frame wrap into a collapsible block layer */
+    .navbar nav {
+        position: absolute;
+        top: 100%; /* Sits flush below the white header container line */
+        left: 0;
+        width: 100%;
+        background-color: #ffffff;
+        max-height: 0; /* Keeps it hidden initially */
+        overflow: hidden; /* Clips elements sliding up or down cleanly */
+        transition: max-height 0.3s ease-in-out;
+        z-index: 10000;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Stacks links smoothly downwards inside mobile panel space drawer */
+    .nav-links {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 24px 0;
+        gap: 20px;
+    }
+
+    .nav-links a {
+        color: #1f2937;
+        font-size: 1.1rem;
+        padding: 8px 0;
+    }
+
+    /* THE CSS JUMP: Direct sibling toggle state query handler engine rule */
+    .menu-toggle:checked ~ nav {
+        max-height: 280px; /* Expands to natural reading vertical frame layout dimension boundary limits */
+    }
+
+    /* Interactive visual transitions creating the clean closing 'X' animation form */
+    .menu-toggle:checked ~ .hamburger-label span:nth-child(2) {
+        opacity: 0;
+    }
+    .menu-toggle:checked ~ .hamburger-label span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+    .menu-toggle:checked ~ .hamburger-label span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
 }
 
 /* --- Hero Section --- */
@@ -210,7 +328,7 @@ h2::after {
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    padding: 5px; 
+    padding: 0; 
              
 }
 
@@ -286,46 +404,62 @@ h2::after {
 }
 
 
-/* --- Contact Section --- */
-.contact-section {
-    background-color: #ffffff;
-    text-align: center;
+ .contact-section {
+    background-color: #111827;
+    color: #ffffff;            
+    text-align: center; 
+    padding: 60px 20px;
+} 
+
+
+
+ /*.contact-section {
+    background-color: #111827; 
+    color: #ffffff;      Forces "Let's Connect" and body text to turn white */
+    /* text-align: center;
+    padding: 60px 20px;
+} */
+
+/* Ensure the heading stands out clearly */
+.contact-section h2 {
+    color: #ffffff !important;
 }
 
-.contact-section p {
-    margin-bottom: 30px;
-    color: #555;
-}
-
-
-.social-links {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    margin-top: 20px;
-}
-
-
+/* Base style for the circular social icon links */
 .social-links a {
-    font-size: 2rem;       
-    color: #333333;        
-    transition: color 0.3s ease, transform 0.2s ease;
-    display: inline-block;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #1f2937; 
+    color: #ffffff !important;  /* Forces the actual Font Awesome icons to turn white */
+    font-size: 1.2rem;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+/* Make sure the nested icon tag inherits the white color explicitly */
+.social-links a i {
+    color: #ffffff !important;
+}
+
+/* Subtle hover effect */
 .social-links a:hover {
-    color: #007bff;        
+    background-color: #374151; 
     transform: translateY(-3px);
 }
-
-/* --- Footer --- */
 footer {
-    background-color: #111;
-    color: #fff;
+    background-color: #0f172a; /* Deep dark slate color that sits perfectly below the contact section */
+    color: #9ca3af;            /* Clean, soft gray color for the copyright text */
     text-align: center;
-    padding: 20px 0;
+    padding: 24px 20px;        /* Adds comfortable breathing room top and bottom */
     font-size: 0.9rem;
+    border-top: 1px solid #1f2937; /* Optional: adds a very subtle divider line between contact and footer */
 }
+
+
 
 /* --- Responsive Adjustments --- */
 @media (max-width: 768px) {
