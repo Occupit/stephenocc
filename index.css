@@ -42,36 +42,36 @@ h2::after {
 }
 
 /* ==========================================================================
-   1. SHARED CORE STYLES (Applies to both Mobile and Desktop)
+   1. GLOBAL RE-SET & BASE STYLES (Shared across all screen sizes)
    ========================================================================== */
-
 .navbar {
     background-color: #ffffff;
     position: sticky;
     top: 0;
-    z-index: 9999; /* Keeps the entire header on top of body elements */
+    z-index: 9999;
     width: 100%;
     box-sizing: border-box;
-    font-family: system-ui, -apple-system, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Pushes logo left, navigation items right */
+    padding: 16px 5%;
 }
 
-/* Formats your name text cleanly */
 .navbar .logo {
     font-weight: 700;
     font-size: 1.25rem;
     color: #111827;
-    white-space: nowrap; /* Strictly prevents name wrapping */
+    white-space: nowrap; /* Prevents your name from ever wrapping awkwardly */
 }
 
-/* Hides the structural tracking checkbox completely on all devices */
+/* Hide the technical tracking checkbox completely on all devices */
 .menu-toggle {
     display: none !important;
-    visibility: hidden;
+    visibility: hidden !important;
 }
 
-/* Resets default browser list styling margins/bullets */
+/* Clear default bullet formatting and lists padding */
 .nav-links {
-    list-style-type: none !important;
     list-style: none !important;
     margin: 0;
     padding: 0;
@@ -80,57 +80,20 @@ h2::after {
 .nav-links a {
     text-decoration: none;
     font-weight: 500;
-    transition: color 0.2s ease;
 }
 
 
 /* ==========================================================================
-   2. DESKTOP VIEW (For screens LARGER than 768px wide)
-   ========================================================================== */
-@media (min-width: 769px) {
-    .navbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px 5%;
-    }
-
-    /* Hides mobile hamburger elements on desktop */
-    .hamburger-label {
-        display: none !important;
-    }
-
-    /* Arranges list elements horizontally */
-    .nav-links {
-        display: flex !important;
-        flex-direction: row !important;
-        gap: 30px;
-    }
-
-    .nav-links a {
-        color: #4b5563; /* Elegant slate gray links */
-    }
-
-    .nav-links a:hover {
-        color: #4338ca; /* Transitions to matching project theme violet on hover */
-    }
-}
-
-
-/* ==========================================================================
-   3. MOBILE RESPONSIVE VIEW (For screen widths 768px or smaller)
+   2. MOBILE-ONLY VIEWPORT STYLES (For screen widths 768px or smaller)
    ========================================================================== */
 @media (max-width: 768px) {
+    /* Explicitly force row layout so elements don't stack vertically */
     .navbar {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        padding: 16px 20px;
-        position: relative; /* Context anchor point for absolute dropdown sheet */
+        flex-direction: row !important;
+        justify-content: space-between !important;
     }
 
-    /* Renders and structures the 3-bar hamburger stacked alignment layout box */
+    /* Structures the hamburger action container on the far right */
     .hamburger-label {
         display: flex !important;
         flex-direction: column;
@@ -139,10 +102,10 @@ h2::after {
         width: 30px;
         height: 30px;
         cursor: pointer;
-        z-index: 10001; /* Layered slightly higher than drawer overlay */
+        z-index: 10001; /* Stays stacked safely above the menu sheet drawer */
     }
 
-    /* Individual custom line style layout rendering dimensions */
+    /* Draws the three horizontal lines */
     .hamburger-label span {
         display: block;
         width: 24px;
@@ -152,24 +115,24 @@ h2::after {
         transition: transform 0.3s ease, opacity 0.3s ease;
     }
 
-    /* Transforms the navigation frame wrap into a collapsible block layer */
+    /* Collapsible vertical panel sheet drawer layout */
     .navbar nav {
         position: absolute;
-        top: 100%; /* Sits flush below the white header container line */
+        top: 100%;
         left: 0;
         width: 100%;
         background-color: #ffffff;
-        max-height: 0; /* Keeps it hidden initially */
-        overflow: hidden; /* Clips elements sliding up or down cleanly */
+        max-height: 0; /* Kept hidden until checked */
+        overflow: hidden;
         transition: max-height 0.3s ease-in-out;
         z-index: 10000;
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     }
 
-    /* Stacks links smoothly downwards inside mobile panel space drawer */
+    /* Adjusts the vertical dropdown link alignments */
     .nav-links {
-        display: flex;
-        flex-direction: column;
+        display: flex !important;
+        flex-direction: column !important;
         align-items: center;
         padding: 24px 0;
         gap: 20px;
@@ -178,15 +141,14 @@ h2::after {
     .nav-links a {
         color: #1f2937;
         font-size: 1.1rem;
-        padding: 8px 0;
     }
 
-    /* THE CSS JUMP: Direct sibling toggle state query handler engine rule */
+    /* Slides dropdown panel open when checkbox is active */
     .menu-toggle:checked ~ nav {
-        max-height: 280px; /* Expands to natural reading vertical frame layout dimension boundary limits */
+        max-height: 280px; 
     }
 
-    /* Interactive visual transitions creating the clean closing 'X' animation form */
+    /* Smoothly morphs the 3 bars into an explicit closing 'X' */
     .menu-toggle:checked ~ .hamburger-label span:nth-child(2) {
         opacity: 0;
     }
@@ -198,6 +160,44 @@ h2::after {
     }
 }
 
+
+/* ==========================================================================
+   3. DESKTOP-ONLY VIEWPORT STYLES (For screens 769px or wider)
+   ========================================================================== */
+@media (min-width: 769px) {
+    /* Completely vaporizes the mobile hamburger elements from large screens */
+    .hamburger-label {
+        display: none !important;
+    }
+
+    /* Reverts the navigation wrapper block container to a normal inline box layout */
+    .navbar nav {
+        position: static !important;
+        width: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
+        display: block !important;
+    }
+
+    /* Arranges the text links horizontally side-by-side */
+    .nav-links {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 32px !important;
+    }
+
+    .nav-links a {
+        color: #4b5563; /* Sleek desktop grey text links */
+        font-size: 1rem;
+        transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+        color: #4338ca; /* Indigo theme pop on hover accent actions */
+    }
+}
 /* --- Hero Section --- */
 .hero-section {
     height: 85vh;
